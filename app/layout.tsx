@@ -1,0 +1,33 @@
+import type React from "react"
+import type { Metadata } from "next"
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "@/components/ui/toaster"
+import { Navbar } from "@/components/navbar"
+import "./globals.css"
+
+const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
+
+export const metadata: Metadata = {
+  title: "ReWear - Sustainable Fashion Marketplace",
+  description: "Thrift, donate, and make an impact with sustainable fashion",
+    generator: 'v0.app'
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${plusJakarta.variable} ${geistMono.variable} font-sans antialiased`}>
+        <Navbar />
+        <main className="min-h-screen">{children}</main>
+        <Toaster />
+        <Analytics />
+      </body>
+    </html>
+  )
+}
