@@ -8,8 +8,10 @@ import { ProductCard } from "@/components/product-card"
 import { EventCard } from "@/components/event-card"
 import { DonationFundWidget } from "@/components/donation-fund-widget"
 import { mockProducts, mockEvents, mockDonationFund, categories } from "@/lib/mock-data"
-import { Search, Leaf, ArrowRight, Sparkles } from "lucide-react"
+import { Search, ArrowRight, Sparkles } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
+import { Leaf } from "lucide-react"
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -30,15 +32,23 @@ export default function HomePage() {
       <section className="relative bg-primary/5 border-b">
         <div className="container px-4 py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/rewear-logo.png"
+                alt="ReWear+ Logo"
+                width={80}
+                height={80}
+                className="rounded-2xl"
+              />
+            </div>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              <Leaf className="h-4 w-4" />
-              Sustainable Fashion Marketplace
+              Wear Again, Care Again
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-balance">
               Thrift. Donate. <span className="text-primary">Make Impact.</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
-              Join the sustainable fashion movement. Buy pre-loved clothes, donate to those in need, or contribute to
+              Join ReWear+ sustainable fashion movement. Buy pre-loved clothes, donate to those in need, or contribute to
               our community fund through DoWear+.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

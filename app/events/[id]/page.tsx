@@ -16,8 +16,8 @@ import {
 import { mockEvents, formatPrice } from "@/lib/mock-data"
 import { AlertTriangle, Heart, Calendar, Target, ArrowLeft, HandHeart, Sparkles, CheckCircle2 } from "lucide-react"
 
-export default async function EventPage({ params }: { params: { id: string } }) {
-  const { id } = params
+export default async function EventPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const event = mockEvents.find((e) => e.id === id)
 
   if (!event) {

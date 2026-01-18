@@ -283,16 +283,69 @@ export default function SellPage() {
               />
             </div>
 
-            {/* Photo Upload Placeholder */}
+            {/* Photo Upload */}
             <div className="space-y-2">
               <Label>Photos</Label>
-              <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                <Upload className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-                <p className="text-sm text-muted-foreground mb-2">Drag and drop photos or click to upload</p>
-                <Button variant="outline" size="sm">
-                  Choose Files
-                </Button>
-                <p className="text-xs text-muted-foreground mt-2">Max 5 photos, 5MB each</p>
+              <div className="border-2 border-dashed rounded-lg p-6">
+                <input
+                  type="file"
+                  id="photo-upload"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => {
+                    const files = e.target.files
+                    if (files) {
+                      const newPhotos: string[] = []
+                      Array.from(files).slice(0, 5 - formData.photos.length).forEach((file) => {
+                        const reader = new FileReader()
+                        reader.onloadend = () => {
+                          newPhotos.push(reader.result as string)
+                          if (newPhotos.length === Math.min(files.length, 5 - formData.photos.length)) {
+                            updateFormData({ photos: [...formData.photos, ...newPhotos].slice(0, 5) })
+                          }
+                        }
+                        reader.readAsDataURL(file)
+                      })
+                    }
+                  }}
+                />
+                {formData.photos.length === 0 ? (
+                  <label htmlFor="photo-upload" className="cursor-pointer block text-center">
+                    <Upload className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
+                    <p className="text-sm text-muted-foreground mb-2">Drag and drop photos or click to upload</p>
+                    <Button variant="outline" size="sm" type="button" onClick={() => document.getElementById('photo-upload')?.click()}>
+                      Choose Files
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-2">Max 5 photos, 5MB each</p>
+                  </label>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+                      {formData.photos.map((photo, index) => (
+                        <div key={index} className="relative aspect-square rounded-lg overflow-hidden bg-muted group">
+                          <img src={photo || "/placeholder.svg"} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => updateFormData({ photos: formData.photos.filter((_, i) => i !== index) })}
+                            className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-medium"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      {formData.photos.length < 5 && (
+                        <label
+                          htmlFor="photo-upload"
+                          className="aspect-square rounded-lg border-2 border-dashed flex items-center justify-center cursor-pointer hover:border-primary transition-colors"
+                        >
+                          <Upload className="h-6 w-6 text-muted-foreground" />
+                        </label>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground text-center">{formData.photos.length}/5 photos uploaded</p>
+                  </div>
+                )}
               </div>
             </div>
           </CardContent>
